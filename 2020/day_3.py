@@ -23,11 +23,11 @@ if __name__ == "__main__":
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt == "i":
+        if opt == "-i":
             infile = arg
-        elif opt == "1":
+        elif opt == "-1":
             star = 1
-        elif opt == "2":
+        elif opt == "-2":
             star = 2
         if opt == "-t":
             file_dir = "test_files"

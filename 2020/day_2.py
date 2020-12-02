@@ -1,11 +1,28 @@
 #! /usr/bin/python
 import sys, getopt
 
-def solve_star1():
-    print(read_file())
-def solve_star2():
-    print(read_file())
+def is_valid_old(line):
+    policy, password = line.split(':')
+    limits, character = policy.split(" ")
+    lower, upper = [int(n) for n in limits.split("-")]
+    return lower <= password.count(character) <=upper
 
+def solve_star1():
+    print(len([line for line in read_file() if is_valid_old(line)]))
+
+def is_valid_new(line):
+    policy, password = line.split(':')
+    limits, character = policy.split(" ")
+    first, second = [int(n) for n in limits.split("-")]
+
+    valid = False
+    valid ^= character == password[first]
+    valid ^= character == password[second]
+    return valid
+
+
+def solve_star2():
+    print(len([line for line in read_file() if is_valid_new(line)]))
 
 def read_file():
     with open(file_dir + "/" + infile) as file:
@@ -23,11 +40,11 @@ if __name__ == "__main__":
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt == "i":
+        if opt == "-i":
             infile = arg
-        elif opt == "1":
+        elif opt == "-1":
             star = 1
-        elif opt == "2":
+        elif opt == "-2":
             star = 2
         if opt == "-t":
             file_dir = "test_files"
