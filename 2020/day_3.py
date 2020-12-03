@@ -1,10 +1,35 @@
 #! /usr/bin/python
 import sys, getopt
 
+def slide_down(forest, direction):
+    (dx, dy) = direction
+    trees = 0
+    x = 0
+    y = 0
+    while y < len(forest):
+        row = forest[y]
+        if row[x % len(row)] == "#":
+            trees += 1
+        x += dx
+        y += dy
+    return trees
+
 def solve_star1():
-    print(read_file())
+    forest = read_file()
+    print(slide_down(forest, (3, 1)))
+
+
 def solve_star2():
-    print(read_file())
+    forest = read_file()
+    directions = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
+
+    encounters = [slide_down(forest, direction) for direction in directions]
+
+    solution = 1
+    for encounter in encounters:
+        solution *= encounter
+    
+    print(solution)
 
 
 def read_file():
