@@ -2,9 +2,16 @@
 import sys, getopt
 
 def solve_star1():
-    print(read_file())
+    passes = [ int(boarding_pass.replace("F", "0").replace("B", "1").replace("L", "0").replace("R", "1"), 2) for boarding_pass in read_file()]
+    print(max(passes))
+
+
+
 def solve_star2():
-    print(read_file())
+    passes = sorted([ int(boarding_pass.replace("F", "0").replace("B", "1").replace("L", "0").replace("R", "1"), 2) for boarding_pass in read_file()])
+    for index, seat in enumerate(passes[:-1]):
+        if passes[index + 1] == seat + 2:
+            print(seat + 1)
 
 
 def read_file():
