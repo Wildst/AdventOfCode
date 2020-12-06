@@ -2,9 +2,32 @@
 import sys, getopt
 
 def solve_star1():
-    print(read_file())
+    s = 0
+    group = ""
+    for passenger in read_file():
+        if not passenger:
+            s += len(set(group))
+            group = ""
+        else:
+            group += passenger
+
+    s += len(set(group))
+    print(s)
+
+
 def solve_star2():
-    print(read_file())
+    s = 0
+    group = set([chr(ord("a") + i) for i in range(26)])
+    for passenger in read_file():
+        if not passenger:
+            s += len(group)
+            group = set([chr(ord("a") + i) for i in range(26)])
+        else:
+            group &= set(passenger)
+
+    s += len(set(group))
+    print(s)
+
 
 
 def read_file():
