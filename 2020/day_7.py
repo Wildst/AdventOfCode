@@ -1,10 +1,52 @@
 #! /usr/bin/python
 import sys, getopt
 
+class Bag:
+    def __init__(self, information):
+        self.type, contents = information.split(" bags contain ")
+        self.contents = {}
+        if contents != "no other bags.":
+            for bag_type in contents.split(", "):
+                amount, *looks, _ = bag_type.split(" ")
+                self.contents[" ".join(looks)] = int(amount)
+
+    def __repr__(self):
+        line = self.type + " bags contain "
+        if len(self.contents) == 0:
+            line += "no other bags"
+        else:
+            for bag in self.contents:
+                line += str(self.contents[bag]) + " " + bag
+                line += " bags" if self.contents[bag] > 1 else " bag"
+                line += ", "
+            line = line[:-2]
+        return line + "."
+
+    def contains(self, bag_type, bags):
+        if self.type == bag_type:
+            return False
+        for bag in self.contents:
+            if bag == bag_type or bags[bag].contains(bag_type, bags):
+                return True
+        return False
+
+    def get_weight(self, bags):
+        s = 0
+        if not self.contents:
+            return s
+        for bag in self.contents:
+            s += (1 + bags[bag].get_weight(bags)) * self.contents[bag]
+        return s
+
+
 def solve_star1():
-    print(read_file())
+    bags = {bag.type: bag for bag in [Bag(line) for line in read_file()]}
+    print(len([bag for bag in bags if bags[bag].contains("shiny gold", bags)]))
+
+
 def solve_star2():
-    print(read_file())
+    bags = {bag.type: bag for bag in [Bag(line) for line in read_file()]}
+    print(bags["shiny gold"].get_weight(bags))
 
 
 def read_file():
