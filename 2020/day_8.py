@@ -1,10 +1,74 @@
 #! /usr/bin/python
 import sys, getopt
 
+class Instruction:
+    def __init__(self, line):
+        self.operation, amount = line.split(" ")
+        self.amount = int(amount)
+
+    def __repr__(self):
+        return self.operation + " " + str(self.amount)
+
+
 def solve_star1():
-    print(read_file())
+    instructions = [Instruction(line) for line in read_file()]
+    ip = 0
+    passed = set()
+    acc = 0
+    while ip not in passed:
+        passed.add(ip)
+        if instructions[ip].operation == "nop":
+            ip += 1
+        elif instructions[ip].operation == "acc":
+            acc += instructions[ip].amount
+            ip += 1
+        elif instructions[ip].operation == "jmp":
+            ip += instructions[ip].amount
+
+    print(acc)
+
 def solve_star2():
-    print(read_file())
+    instructions = [Instruction(line) for line in read_file()]
+    ip = 0
+    passed = set()
+    acc = 0
+
+    changed_something = False
+    changed_pointer, changed_acc = 0, 0
+    backup_set = set()
+
+    while ip < len(instructions):
+        if ip in passed:
+            passed = backup_set
+            ip = changed_pointer
+            acc = changed_acc
+            changed_something = False
+        passed.add(ip)
+        if instructions[ip].operation == "nop":
+            if changed_something:
+                ip += 1
+            else:
+                backup_set = set(passed)
+                changed_acc = acc
+                changed_pointer = ip + 1
+
+                ip += instructions[ip].amount
+                changed_something = True
+
+        elif instructions[ip].operation == "acc":
+            acc += instructions[ip].amount
+            ip += 1
+        elif instructions[ip].operation == "jmp":
+            if changed_something:
+                ip += instructions[ip].amount
+            else:
+                backup_set = set(passed)
+                changed_acc = acc
+                changed_pointer = ip + instructions[ip].amount
+
+                ip += 1
+                changed_something = True
+    print(acc)
 
 
 def read_file():
