@@ -2,9 +2,34 @@
 import sys, getopt
 
 def solve_star1():
-    print(read_file())
+    start_time, lines = read_file()
+    start_time = int(start_time)
+    lines = [int(line) for line in lines.split(",") if line != "x"]
+    time = start_time
+    test = [line for line in lines if time % line == 0]
+    while not test:
+        time += 1
+        test = [line for line in lines if time % line == 0]
+    print((time - start_time) * test[0])
+
+
+
 def solve_star2():
-    print(read_file())
+    _, lines = read_file()
+    lines = [int(line) if line != "x" else 1 for line in lines.split(",")]
+    repetition_rate = 1
+    timestamp = 0
+    for offset, line in enumerate(lines):
+        # get earliest timestamp
+        while (offset + timestamp) %line != 0:
+            timestamp += repetition_rate
+        # check repetition rate
+        test_time = timestamp + repetition_rate
+        while (offset + test_time) % line != 0:
+            test_time += repetition_rate
+        repetition_rate = test_time - timestamp
+
+    print(timestamp)
 
 
 def read_file():
