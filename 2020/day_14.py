@@ -2,9 +2,44 @@
 import sys, getopt
 
 def solve_star1():
-    print(read_file())
+    memory = {}
+    mask = (0, 0)
+    for line in read_file():
+        command, value = line.split(" = ")
+        if command == "mask":
+            mask = (int(value.replace("X", "0"), 2), int(value.replace("X", "1"), 2))
+        else:
+            location = int(command[4:-1])
+            memory[location] = (int(value) | mask[0]) & mask[1]
+    print(sum(memory[value] for value in memory))
+
+def get_floating_options(indices, start_value):
+    if not indices:
+        return [start_value]
+
+    return [*get_floating_options(indices[1:], start_value),
+            *get_floating_options(indices[1:], start_value ^ 2 ** indices[0])]
+
 def solve_star2():
-    print(read_file())
+    memory = {}
+    mask = ""
+    m = 0
+    for line in read_file():
+        command, value = line.split(" = ")
+        if command == "mask":
+            mask = value
+        else:
+            location = int(command[4:-1])
+            value = int(value)
+            floating = []
+            for i, c in enumerate(reversed(mask)):
+                if c == "1":
+                    location |= 2**i
+                elif c == "X":
+                    floating.append(i)
+            for position in get_floating_options(floating, location):
+                memory[position] = value
+    print(sum(memory[value] for value in memory))
 
 
 def read_file():
