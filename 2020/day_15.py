@@ -2,9 +2,41 @@
 import sys, getopt
 
 def solve_star1():
-    print(read_file())
+    for line in read_file():
+        numbers = [int(n) for n in line.split(",")]
+        i = len(numbers) - 1
+        recency = {n: i for i, n in enumerate(numbers[:-1])}
+        current = numbers[-1]
+        stack = [i for i in numbers]
+        while i < 2019:
+            if current not in recency:
+                new = 0
+                recency[current] = i
+                current = new
+            else:
+                new = i- recency[current]
+                recency[current] = i
+                current = new
+            i += 1
+        print(current)
 def solve_star2():
-    print(read_file())
+    for line in read_file():
+        numbers = [int(n) for n in line.split(",")]
+        i = len(numbers) - 1
+        recency = {n: i for i, n in enumerate(numbers[:-1])}
+        current = numbers[-1]
+        stack = [i for i in numbers]
+        while i < 30000000-1:
+            if current not in recency:
+                new = 0
+                recency[current] = i
+                current = new
+            else:
+                new = i- recency[current]
+                recency[current] = i
+                current = new
+            i += 1
+        print(current)
 
 
 def read_file():
