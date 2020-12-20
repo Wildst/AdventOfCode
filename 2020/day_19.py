@@ -70,8 +70,6 @@ class RuleChecker():
         return False
 
 
-
-
 def solve_star1():
     i = 0
     lines = read_file()
