@@ -1,8 +1,33 @@
 #! /usr/bin/python
 import sys, getopt
+from functools import reduce
 
 def solve_star1():
-    print(read_file())
+    p1 = []
+    p2 = []
+    current_player = p1
+    for line in read_file():
+        if line.startswith("Player"):
+            pass
+        elif line:
+            current_player.append(int(line))
+        else:
+            current_player = p2
+    while p1 and p2:
+        card_p1, *p1 = p1
+        card_p2, *p2 = p2
+        if card_p1 > card_p2:
+            p1.append(card_p1)
+            p1.append(card_p2)
+        else:
+            p2.append(card_p2)
+            p2.append(card_p1)
+
+    if p1:
+        print(sum([card*value for card, value in zip(p1, range(len(p1), 0, -1))]))
+        print('p1', *p1)
+    else:
+        print(sum([card*value for card, value in zip(p2, range(len(p2), 0, -1))]))
 def solve_star2():
     print(read_file())
 
