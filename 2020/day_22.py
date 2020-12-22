@@ -22,10 +22,13 @@ def solve_star1():
         else:
             p2.append(card_p2)
             p2.append(card_p1)
+        print(*p1)
 
+    if p2:
+        p1 = p2
     if p1:
         print(sum([card*value for card, value in zip(p1, range(len(p1), 0, -1))]))
-        print('p1', *p1)
+        print('p1', " + ".join([(str(card) + " * " + str(value)) for card, value in zip(p1, range(len(p1), 0, -1))]))
     else:
         print(sum([card*value for card, value in zip(p2, range(len(p2), 0, -1))]))
 def solve_star2():
