@@ -2,9 +2,16 @@
 import sys, getopt
 
 def solve_star1():
-    return read_file()
+    line = read_file()[0]
+    return line.count("(") - line.count(")")
 def solve_star2():
-    return read_file()
+    line = read_file()[0]
+    level = 0
+    for i, c in enumerate(line):
+        if level < 0:
+            return i
+        level += [-1,1][c=='(']
+
 
 
 def read_file():
@@ -13,7 +20,7 @@ def read_file():
 
 
 if __name__ == "__main__":
-    infile = sys.argv[0][2:-2] + "in"
+    infile = sys.argv[0][:-2] + "in"
     file_dir = "input_files"
     star = 1
     try:
