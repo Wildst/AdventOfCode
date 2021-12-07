@@ -2,9 +2,23 @@
 import sys, getopt
 
 def solve_star1():
-    return read_file()
+    fish = [0]*9
+    for n in read_file()[0].split(','):
+        fish[int(n)] += 1
+    for _ in range(80):
+        fish[7] += fish[0]
+        fish.append(fish.pop(0))
+    return sum(fish)
+
 def solve_star2():
-    return read_file()
+    fish = [0]*9
+    for n in read_file()[0].split(','):
+        fish[int(n)] += 1
+    for _ in range(256):
+        fish[7] += fish[0]
+        fish.append(fish.pop(0))
+    return sum(fish)
+
 
 
 def read_file():
