@@ -1,7 +1,10 @@
 #! /usr/bin/python
 import sys, getopt
 
-def solve_star1():
+def solve_star1(): # oneliner
+    return max([ sum( map( int, elf.split() ) ) for elf in "\n".join(read_file()).split("\n\n") ])
+
+def solve_star1_clear():
     elves = [0]
     for line in read_file():
         if not line.strip():
@@ -9,7 +12,11 @@ def solve_star1():
         else:
             elves[ -1 ] += int( line )
     return max( elves )
+
 def solve_star2():
+    return sum( sorted( sum( map( int, elf.split() ) ) for elf in "\n".join(read_file()).split("\n\n") )[-3:])
+
+def solve_star2_clear():
     elves = [0]
     for line in read_file():
         if not line.strip():
