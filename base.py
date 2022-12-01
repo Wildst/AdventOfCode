@@ -1,4 +1,4 @@
-#! /usr/bin/python3.8
+#! /usr/bin/python
 import sys, getopt
 
 def solve_star1():
