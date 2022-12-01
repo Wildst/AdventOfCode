@@ -13,7 +13,7 @@ def read_file():
 
 
 if __name__ == "__main__":
-    infile = sys.argv[0][2:-2] + "in"
+    infile = sys.argv[0][0:-2] + "in"
     file_dir = "input_files"
     star = 1
     try:
