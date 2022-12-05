@@ -15,9 +15,11 @@ def solve_star1():
 
     for line in lines[pos+1:]:
         _, amount, _, origin, _, destination = line.split()
-        for _ in range(int(amount)):
-            stacks[int(destination)-1].append(stacks[int(origin)-1][-1])
-            stacks[int(origin)-1].pop()
+        amount = int(amount)
+        origin = int(origin)-1
+        destination = int(destination)-1
+        stacks[destination] += stacks[origin][-1:-amount:-1]
+        stacks[origin] = stacks[origin][:-amount]
 
     return "".join(stack[-1] for stack in stacks)
 def solve_star2():
