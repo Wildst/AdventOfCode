@@ -1,19 +1,19 @@
 #! /usr/bin/python
 import sys, getopt
+import hashlib
 
 def solve_star1():
-    return sum([calculate_surface(line) for line in read_file()])
+    i = 0
+    while not hashlib.md5((read_file()[0] + str(i)).encode()).hexdigest().startswith('00000'):
+        i += 1
+    return i
+
 
 def solve_star2():
-    return sum([calculate_ribbon(line) for line in read_file()])
-
-def calculate_surface(line):
-    l,w,h = map(int, line.split('x'))
-    return 2*(l*w+w*h+h*l)+min(l*w,w*h,h*l)
-
-def calculate_ribbon(line):
-    l,w,h = map(int, line.split('x'))
-    return l*w*h+2*min(l+h,l+w,w+h)
+    i = 0
+    while not hashlib.md5((read_file()[0] + str(i)).encode()).hexdigest().startswith('000000'):
+        i += 1
+    return i
 
 
 def read_file():
@@ -22,7 +22,7 @@ def read_file():
 
 
 if __name__ == "__main__":
-    infile = sys.argv[0][:-2] + "in"
+    infile = sys.argv[0][0:-2] + "in"
     file_dir = "input_files"
     star = 1
     try:
@@ -45,12 +45,3 @@ if __name__ == "__main__":
         print(solve_star1())
     elif star == 2:
         print(solve_star2())
-
-
-
-
-
-
-
-
-

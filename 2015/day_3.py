@@ -1,19 +1,35 @@
 #! /usr/bin/python
 import sys, getopt
 
+directions={
+    ">": (0,1),
+    "<": (0,-1),
+    "^": (1,0),
+    "v":(-1,0)
+}
+
 def solve_star1():
-    return sum([calculate_surface(line) for line in read_file()])
-
+    pos = (0,0)
+    houses = set()
+    houses.add(pos)
+    for c in read_file()[0]:
+        pos = pos[0] + directions[c][0], pos[1] + directions[c][1]
+        houses.add(pos)
+    return len(houses)
 def solve_star2():
-    return sum([calculate_ribbon(line) for line in read_file()])
+    p1 = (0,0)
+    p2 = (0,0)
+    houses = set()
+    houses.add(p2)
+    for i, c in enumerate(read_file()[0]):
+        if i % 2:
+            p1 = p1[0] + directions[c][0], p1[1] + directions[c][1]
+            houses.add(p1)
+        else:
+            p2 = p2[0] + directions[c][0], p2[1] + directions[c][1]
+            houses.add(p2)
 
-def calculate_surface(line):
-    l,w,h = map(int, line.split('x'))
-    return 2*(l*w+w*h+h*l)+min(l*w,w*h,h*l)
-
-def calculate_ribbon(line):
-    l,w,h = map(int, line.split('x'))
-    return l*w*h+2*min(l+h,l+w,w+h)
+    return len(houses)
 
 
 def read_file():
@@ -22,7 +38,7 @@ def read_file():
 
 
 if __name__ == "__main__":
-    infile = sys.argv[0][:-2] + "in"
+    infile = sys.argv[0][0:-2] + "in"
     file_dir = "input_files"
     star = 1
     try:
@@ -45,12 +61,3 @@ if __name__ == "__main__":
         print(solve_star1())
     elif star == 2:
         print(solve_star2())
-
-
-
-
-
-
-
-
-
