@@ -69,7 +69,6 @@ def is_loop( ground, start_pos, obstacle ):
 def solve_star2():
     ground = read_file()
     pos = find_pos( ground )
-    obstacle_spots = set()
     return len( [ option for option in get_all_positions( pos, ground ) if is_loop( ground, pos, option ) ] )
 
 
