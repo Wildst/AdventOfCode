@@ -41,41 +41,54 @@ def get_prize( button_a, button_b, prize ):
 def solve_star1():
     return sum( get_prize(*machine) for machine in parse_prizes( read_file() ) )
 
+factor = 2
+
+def get_close( button_a, button_b, prize ):
+    a_x, a_y = button_a
+    b_x, b_y = button_b
+    p_x, p_y = prize
+
+    current_x, current_y = 0, 0
+    score = 0
+
+    while p_x - current_x > 100:
+        t_x, t_y = ( p_x - current_x ) // factor, ( p_y - current_y ) // factor
+        partial_score, c_x, c_y = get_close( button_a, button_b, (t_x, t_y) )
+        partial_score *= factor
+        if not partial_score:
+            break
+        c_x *= factor
+        c_y *= factor
+        score += partial_score
+
+        current_x += c_x
+        current_y += c_y
+
+    c_x = current_x
+    c_y = current_y
+
+    return score, c_x, c_y
 
 def get_far_prize( button_a, button_b, prize ):
     a_x, a_y = button_a
     b_x, b_y = button_b
     p_x, p_y = prize
+
     p_x += 10000000000000
     p_y += 10000000000000
-    a_factor = a_x / a_y
-    b_factor = b_x / b_y
-    p_factor = p_x / p_y
-    c_x, c_y = 0, 0
-    score = 0
-    while c_x < p_x:
-        if c_x % 100000000000 == 0:
-            print( c_x, c_y )
-        c_factor = c_x / c_y if c_y else 1
-        if c_factor < p_factor:
-            if a_factor > p_factor:
-                score += 3
-                c_x += a_x
-                c_y += a_y
-            else:
-                score += 1
-                c_x += b_x
-                c_y += b_y
-        else:
-            if a_factor < p_factor:
-                score += 3
-                c_x += a_x
-                c_y += a_y
-            else:
-                score += 1
-                c_x += b_x
-                c_y += b_y
-    return score if c_x == p_x and c_y == p_y else 0
+
+    determinant = a_x * b_y - a_y * b_x
+
+    if (p_x * b_y - p_y * b_x ) % determinant or (a_x * p_y - a_y * p_x ) % determinant:
+        return 0
+
+    a_count = (p_x * b_y - p_y * b_x ) / determinant
+    b_count = (a_x * p_y - a_y * p_x ) / determinant
+
+    if a_count < 0 or b_count < 0:
+        return 0
+
+    return int( a_count * 3 + b_count )
 
 def solve_star2():
     return sum( get_far_prize(*machine) for machine in parse_prizes( read_file() ) )
