@@ -1,10 +1,20 @@
 #! /usr/bin/python
 import sys, getopt
 
+def get_max(batterybank):
+    return max(map(int, batterybank))
+
+def get_max_joltage(batterybank, batteries = 2):
+    if batteries == 1:
+        return str(get_max(batterybank))
+    best = str(get_max(batterybank[:-(batteries-1)]))
+    rest = get_max_joltage(batterybank[batterybank.index(str(best))+1:], batteries-1)
+    return best+rest
+
 def solve_star1():
-    return read_file()
+    return sum(map(int, [get_max_joltage(line) for line in read_file()]))
 def solve_star2():
-    return read_file()
+    return sum(map(int, [get_max_joltage(line,12) for line in read_file()]))
 
 
 def read_file():
