@@ -1,10 +1,42 @@
 #! /usr/bin/python
 import sys, getopt
 
+def is_invalid(id):
+    s = str(id)
+    return s[len(s)//2:] == s[:len(s)//2]
+
+def is_repetition(id):
+    s = str(id)
+    for repetition_size in range(1,len(s)//2+1):
+        if s == s[:repetition_size] * (len(s) //repetition_size):
+            return True
+    return False
+
+def find_invalid(start,end, filter=is_invalid):
+    s = int(start)
+    e = int(end)
+    return [id for id in range(s, e+1) if filter(id)]
+
 def solve_star1():
-    return read_file()
+    result = 0
+    for line in read_file():
+        for range in line.split(","):
+            if not range:
+                continue
+            a = find_invalid(*range.split("-"))
+            result += sum(find_invalid(*range.split("-")))
+
+    return result
 def solve_star2():
-    return read_file()
+    result = 0
+    for line in read_file():
+        for range in line.split(","):
+            if not range:
+                continue
+            a = find_invalid(*range.split("-"))
+            result += sum(find_invalid(*range.split("-"), is_repetition))
+
+    return result
 
 
 def read_file():
