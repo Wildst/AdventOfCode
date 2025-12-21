@@ -2,9 +2,32 @@
 import sys, getopt
 
 def solve_star1():
-    return read_file()
+    number = 50
+    count = 0
+    for line in read_file():
+        if line.startswith("L"):
+            number -= int(line[1:])
+        else:
+            number += int(line[1:])
+        number = number % 100
+        if not number:
+            count += 1
+
+    return count
 def solve_star2():
-    return read_file()
+    number = 50
+    count = 0
+    for line in read_file():
+        for _ in range(int(line[1:])):
+            if line.startswith("L"):
+                number -= 1
+            else:
+                number += 1
+            number = number % 100
+            if not number:
+                count += 1
+
+    return count
 
 
 def read_file():
