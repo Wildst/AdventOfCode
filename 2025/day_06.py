@@ -1,15 +1,44 @@
 #! /usr/bin/python
 import sys, getopt
+from functools import reduce
 
+def solve(problem):
+    operator = problem[-1]
+    if operator == "+":
+        return reduce(lambda x, y: x + y, map(int,problem[:-1]))
+    else:
+        return reduce(lambda x, y: x * y, map(int,problem[:-1]))
+
+def solve_full(problem):
+    operator = problem[0][-1]
+    numbers = [*map(int, [line[:-1] for line in problem])]
+    if operator == "+":
+        return reduce(lambda x, y: x + y, numbers)
+    else:
+        return reduce(lambda x, y: x * y, numbers)
 def solve_star1():
-    return read_file()
+    return sum( solve(problem) for problem in zip(*[line.split() for line in read_file()]))
+
 def solve_star2():
-    return read_file()
+    lines = read_file()
+    longest = max(map(len, lines))
+    lines = [ line[:-1] + " "*(longest -len(line)) for line in lines]
+
+    problems = []
+    problem = []
+    for line in ["".join(c) for c in zip(*lines)]:
+        if line.strip():
+            problem.append(line)
+        else:
+            problems.append(problem)
+            problem = []
+    problems.append(problem)
+    return sum(solve_full(problem) for problem in problems)
 
 
 def read_file():
     with open(file_dir + "/" + infile) as file:
-        return [line.strip() for line in file]
+        return [line for line in file]
 
 
 if __name__ == "__main__":
