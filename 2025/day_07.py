@@ -1,10 +1,41 @@
 #! /usr/bin/python
 import sys, getopt
+from functools import lru_cache
 
 def solve_star1():
-    return read_file()
+    grid = read_file()
+    beams = set()
+    beams.add(grid[0].index("S"))
+    counter = 0
+    for line in grid[1:]:
+        new_beams = set()
+        for beam in beams:
+            if line[beam] == "^":
+                new_beams.add(beam -1)
+                new_beams.add(beam +1)
+                counter += 1
+            elif line[beam] == ".":
+                new_beams.add(beam)
+        beams = new_beams
+    return counter
+
+class Grid:
+    def __init__(self, lines):
+        self.lines = lines
+
+    @lru_cache
+    def count_timelines(self, beam, line):
+        if line >= len(self.lines):
+            return 1
+        if self.lines[line][beam] == "^":
+            return self.count_timelines(beam-1, line+1) \
+                 + self.count_timelines(beam+1, line+1)
+        else:
+            return self.count_timelines(beam, line + 1)
+
 def solve_star2():
-    return read_file()
+    grid = Grid(read_file())
+    return grid.count_timelines(grid.lines[0].index("S"), 0)
 
 
 def read_file():
